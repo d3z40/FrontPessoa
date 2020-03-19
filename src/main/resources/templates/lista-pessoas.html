@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width" />
+        <title>Lista de Pessoas</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>Pessoas</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Data de Nascimento</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pessoa : ${pessoas}">
+                            <td> <span th:text="${pessoa.id}"></span> </td>
+                            <td> <span th:text="${pessoa.nome}"></span> </td>
+                            <td> <span th:text="${#strings.concat( #strings.substring(pessoa.cpf, 0, 3),'.',#strings.substring(pessoa.cpf, 3, 6),'.',#strings.substring(pessoa.cpf, 6, 9),'-',#strings.substring(pessoa.cpf, 9, 11))}"></span> </td>
+                            <td> <span th:text="${#dates.format(pessoa.dataNascimento, 'dd/MM/yyyy')}"></span> </td>
+                            <td>
+                                <div class="btn-group pull-right">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <form method="POST" th:action="@{/pessoas/edit/{id}(id=${pessoa.id})}">
+                                                    <button type="submit" name="submit" value="value" class="btn btn-primary">Editar</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form method="POST" th:action="@{/pessoas/deletar/{id}(id=${pessoa.id})}">
+                                                    <button type="submit" name="submit" value="value" class="btn btn-warning">Excluir</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <a class="btn btn-sm btn-success" th:href="@{/pessoas/cadastra-pessoa}" >Adicionar</a>
+            </div>
+        </div>
+    </body>
+</html>
